@@ -1,0 +1,18 @@
+/**
+ * Lovable AI Gateway provider — server only.
+ * Calls Google Gemini through the Lovable gateway without a user-supplied key.
+ */
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+
+export function createGateway() {
+  const key = process.env.LOVABLE_API_KEY;
+  if (!key) throw new Error("LOVABLE_API_KEY is not configured");
+  return createOpenAICompatible({
+    name: "lovable",
+    baseURL: "https://ai.gateway.lovable.dev/v1",
+    headers: {
+      "Lovable-API-Key": key,
+      "X-Lovable-AIG-SDK": "vercel-ai-sdk",
+    },
+  });
+}
